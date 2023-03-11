@@ -1,0 +1,135 @@
+export const description =
+  'On this page, we can find various methods for processing users on submission.'
+
+# User
+
+The user regulates how the facilitator or student can register, login, and get authorization.
+
+## The user model
+
+User endpoints have information about username, email, password, role, and phone number.
+
+### Properties
+
+<Properties>
+  <Property name="user_id" type="string">
+    Unique identifier for the user.
+  </Property>
+  <Property name="username" type="string">
+    It contains the full name of a user
+  </Property>
+  <Property name="role" type="string">
+    Role can distinguish whether the user is a student or a facilitator.
+  </Property>
+  <Property name="email" type="string">
+    Email is used for registration and log in purposes.
+  </Property>
+  <Property name="password" type="string">
+    The password is used for registration and log in purposes.
+  </Property>
+  <Property name="phone_number" type="string">
+    The phone number is used as additional data for the user's biodata.
+  </Property>
+</Properties>
+
+---
+
+## Register {{ tag: 'POST', label: '/register' }}
+
+<Row>
+  <Col>
+
+    This endpoint will handle the registration of the user.
+
+  </Col>
+  <Col sticky>
+
+    ```json {{ title: 'Request Body' }}
+    {
+        {
+            "username": string,
+            "role": string,
+            "email": string,
+            "password": string,
+            "phone_number": string,
+        },
+    }
+    ```
+
+  </Col>
+</Row>
+
+---
+
+## Login {{ tag: 'POST', label: '/login' }}
+
+<Row>
+  <Col>
+
+    This endpoint will handle log in activity of the user.
+
+  </Col>
+  <Col sticky>
+
+    ```json {{ title: 'Request Body' }}
+    {
+        {
+            "email": string,
+            "password": string,
+        },
+    }
+    ```
+
+    ```json {{ title: 'Response Data' }}
+    {
+        {
+            "status": "success",
+            "message": "User logged successfully",
+            "data": {
+                "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLXlqNXBjX0xBUkNfQWdLNjEiLCJpYXQiOjE2NDE3OTk5NDl9.flEMaQ7zsdYkxuyGbiXjEDXO8kuDTcI__3UjCwt6R_I"
+            }
+        }
+    }
+    ```
+
+  </Col>
+</Row>
+
+---
+
+## Get user log in {{ tag: 'GET', label: '/users/me' }}
+
+<Row>
+  <Col>
+
+    This endpoint will provide information about the user who is currently logged in.
+
+  </Col>
+  <Col sticky>
+
+    ```json {{ title: 'Response Data' }}
+    {
+        "status": "success", 
+        "message": "User retrieved", 
+        "data": 
+        {
+            "id": "user-yj5pc_LARC_AgK61", 
+            "name": "John Doe", 
+            "email": "john@example.com"
+        }
+    }
+    ```
+
+  </Col>
+</Row>
+
+---
+
+## 
+
+
+## 
+
+
+## 
+

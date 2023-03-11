@@ -1,0 +1,621 @@
+export const description =
+  'On this page, we’ll dive into the different course endpoints you can use to manage courses programmatically.'
+
+# Course
+
+The course contains some data such as sections, tasks, discussions, and can be accessed by students and also facilitators. The facilitator can add and change data on the course, while the sudent can only view course data.
+
+### Properties
+
+<Properties>
+  <Property name="course_id" type="string">
+    Unique identifier for the course.
+  </Property>
+  <Property name="course_title" type="string">
+    Loads the name of the course
+  </Property>
+  <Property name="thumbnail" type="image">
+    Loads the image displayed in the course
+  </Property>
+  <Property name="createdBy_id" type="string">
+    Contains the user_id of the facilitator who created the course.
+  </Property>
+  <Property name="description" type="string">
+    Load the course description.
+  </Property>
+  <Property name="prerequisites" type="string">
+    Include a description of any prerequisites before starting the course.
+  </Property>
+  <Property name="section" type="timestamp">
+    Load the learning chapters in the course.
+  </Property>
+</Properties>
+
+---
+
+## List all courses {{ tag: 'GET', label: '/courses' }}
+
+<Row>
+  <Col>
+
+    This endpoint is used to get data from all courses that have been added
+
+  </Col>
+  <Col sticky>
+
+    <CodeGroup title="Request" tag="GET" label="/courses">
+
+    ```bash {{ title: 'cURL' }}
+    curl -G BASE_URL/courses \
+      -H "Authorization: Bearer {token}" \
+    ```
+
+    ```js
+    import ApiClient from '@example/protocol-api'
+
+    const client = new ApiClient(token)
+
+    await client.courses.list()
+    ```
+
+    ```python
+    from protocol_api import ApiClient
+
+    client = ApiClient(token)
+
+    client.courses.list()
+    ```
+
+    ```php
+    $client = new \Protocol\ApiClient($token);
+
+    $client->courses->list();
+    ```
+
+    </CodeGroup>
+
+    ```json {{ title: 'Response' }}
+    {
+      "data": [
+        {
+          "course_id": "WAz8eIbvDR60rouK",
+          "course_title": "This Title",
+          "thumbnail": "main.jpg",
+          "createdBy_id": "WAz8eIbvDR60rouK",
+          "description": string,
+          "prerequisites": string,
+          "section": [
+            {
+              "section_id": string,
+              "section_title": string,
+              "video_link": string,
+              "description": string,
+              "task": [
+                {
+                  "task_id": string,
+                  "deadline": timestamp,
+                  "createdAt": timestamp,
+                  "description": string,
+                  "criteria": [...],
+                }
+              ]
+            },
+            ...
+          ],
+        },
+        ...
+      ]
+    }
+    ```
+
+  </Col>
+</Row>
+
+---
+
+## Create a course {{ tag: 'POST', label: '/courses' }}
+
+<Row>
+  <Col>
+
+    This endpoint is used by the facilitator to add a course
+
+    ### Required attributes
+
+    <Properties>
+      <Property name="course_id" type="string">
+        Unique identifier for the course.
+      </Property>
+      <Property name="course_title" type="string">
+        Loads the name of the course
+      </Property>
+      <Property name="createdBy_id" type="string">
+        Contains the user_id of the facilitator who created the course.
+      </Property>
+      <Property name="description" type="string">
+        Load the course description.
+      </Property>
+      <Property name="prerequisites" type="string">
+        Include a description of any prerequisites before starting the course.
+      </Property>
+    </Properties>
+
+    ### Optional attributes
+
+    <Properties>
+      <Property name="section" type="timestamp">
+        Load the learning chapters in the course.
+      </Property>
+      <Property name="thumbnail" type="image">
+        Loads the image displayed in the course
+      </Property>
+    </Properties>
+
+  </Col>
+  <Col sticky>
+
+    ```json {{ title: 'Request Body' }}
+        {
+          "course_id": "WAz8eIbvDR60rouK",
+          "course_title": "This Title",
+          "thumbnail": "main.jpg",
+          "createdBy_id": "WAz8eIbvDR60rouK",
+          "description": string,
+          "prerequisites": string,
+          "section": array,
+        },
+    ```
+
+  </Col>
+</Row>
+
+---
+
+## Retrieve a course {{ tag: 'GET', label: '/courses/${id}' }}
+
+<Row>
+  <Col>
+
+    This endpoint allows you to retrieve a course by providing their course_id.
+
+  </Col>
+  <Col sticky>
+
+    <CodeGroup title="Request" tag="GET" label="courses/WAz8eIbvDR60rouK">
+
+    ```bash {{ title: 'cURL' }}
+    curl https://api.protocol.chat/v1/courses/WAz8eIbvDR60rouK \
+      -H "Authorization: Bearer {token}"
+    ```
+
+    ```js
+    import ApiClient from '@example/protocol-api'
+
+    const client = new ApiClient(token)
+
+    await client.courses.get('WAz8eIbvDR60rouK')
+    ```
+
+    ```python
+    from protocol_api import ApiClient
+
+    client = ApiClient(token)
+
+    client.courses.get("WAz8eIbvDR60rouK")
+    ```
+
+    ```php
+    $client = new \Protocol\ApiClient($token);
+
+    $client->courses->get('WAz8eIbvDR60rouK');
+    ```
+
+    </CodeGroup>
+
+    ```json {{ title: 'Response Data' }}
+    {
+        "status_code": 200,
+        "message": "success",
+        "data":
+          {
+            "course_id": "WAz8eIbvDR60rouK",
+            "course_title": "This Title",
+            "thumbnail": "main.jpg",
+            "createdBy_id": "WAz8eIbvDR60rouK",
+            "description": string,
+            "prerequisites": string,
+            "section": [],
+          },
+    }
+    ```
+
+  </Col>
+</Row>
+
+---
+
+## Edit a course {{ tag: 'PUT', label: 'courses/${id}' }}
+
+<Row>
+  <Col>
+
+    This endpoint allows you to perform an update on a course. 
+
+    ### Required attributes
+
+    <Properties>
+      <Property name="course_id" type="string">
+        Unique identifier for the course.
+      </Property>
+    </Properties>
+
+    ### Optional attributes
+
+    <Properties>
+      <Property name="course_title" type="string">
+        Loads the name of the course
+      </Property>
+      <Property name="thumbnail" type="image">
+        Loads the image displayed in the course
+      </Property>
+      <Property name="description" type="string">
+        Load the course description.
+      </Property>
+      <Property name="prerequisites" type="string">
+        Include a description of any prerequisites before starting the course.
+      </Property>
+      <Property name="section" type="timestamp">
+        Load the learning chapters in the course.
+      </Property>
+    </Properties>
+
+  </Col>
+  <Col sticky>
+
+    ```json {{ title: 'Request Body' }}
+        {
+          "course_id": "WAz8eIbvDR60rouK",
+          "course_title": "This Title",
+          "thumbnail": "main.jpg",
+          "createdBy_id": "WAz8eIbvDR60rouK",
+          "description": string,
+          "prerequisites": string,
+          "section": array,
+        },
+    ```
+
+  </Col>
+</Row>
+
+---
+
+## 
+
+## List all submission {{ tag: 'GET', label: '/course/${task_id}/submissions' }}
+
+<Row>
+  <Col>
+
+    This endpoint is used to get data from all submission from student that have been added
+
+    ### Attributes
+
+    <Properties>
+      <Property name="submission_id" type="string">
+        Unique identifier for the submission.
+      </Property>
+      <Property name="createdBy_id" type="string">
+        Load the student_id of the assignment sender.
+      </Property>
+      <Property name="task_id" type="string">
+        Load the task_id of task description.
+      </Property>
+      <Property name="createdAt" type="string">
+        Load the assignment's due date.
+      </Property>
+      <Property name="file" type="document">
+        Loads the task file from the sender.
+      </Property>
+      <Property name="student_note" type="string">
+        Load notes from the sender.
+      </Property>
+      <Property name="report" type="object">
+        Load the report from fasilitator.
+      </Property>
+    </Properties>
+
+  </Col>
+  <Col sticky>
+
+    <CodeGroup title="Request" tag="GET" label="/course/${task_id}/submissions">
+
+    ```bash {{ title: 'cURL' }}
+    curl -G BASE_URL/course/${task_id}/submissions \
+      -H "Authorization: Bearer {token}" \
+    ```
+
+    ```js
+    import ApiClient from '@example/protocol-api'
+
+    const client = new ApiClient(token)
+
+    await client.submissions.list()
+    ```
+
+    ```python
+    from protocol_api import ApiClient
+
+    client = ApiClient(token)
+
+    client.submissions.list()
+    ```
+
+    ```php
+    $client = new \Protocol\ApiClient($token);
+
+    $client->submissions->list();
+    ```
+
+    </CodeGroup>
+
+    ```json {{ title: 'Response' }}
+    {
+      "data": [
+        {
+          "submission_id": "WAz8eIbvDR60rouK",
+          "createdBy_id": "WAz8eIbvDR60rouK",
+          "task_id": "main.jpg",
+          "createdAt": timestamp,
+          "file": document,
+          "student_note": string,
+          "report": {
+            "report_id": string,
+            "acceptance_status": boolean,
+            "criteria_status": arr,
+            "reviewer_note": string,
+            "grade": integer,
+          },
+        },
+        ...
+      ]
+    }
+    ```
+
+  </Col>
+</Row>
+
+---
+
+## Retrieve a submission {{ tag: 'GET', label: '/course/${task_id}/submissions/${submission_id}' }}
+
+<Row>
+  <Col>
+
+    This endpoint is used to get a submission data from student that have been added
+
+    ### Required Attributes
+
+    <Properties>
+      <Property name="submission_id" type="string">
+        Unique identifier for the submission.
+      </Property>
+    </Properties>
+
+  </Col>
+  <Col sticky>
+
+    ```json {{ title: 'Response' }}
+    {
+      "status_code": 200,
+      "message": success,
+      "data":
+        {
+          "submission_id": "WAz8eIbvDR60rouK",
+          "createdBy_id": "WAz8eIbvDR60rouK",
+          "task_id": "main.jpg",
+          "createdAt": timestamp,
+          "file": document,
+          "student_note": string,
+          "report": {
+            "report_id": string,
+            "acceptance_status": boolean,
+            "criteria_status": arr,
+            "reviewer_note": string,
+            "grade": integer,
+          },
+        },
+    }
+    ```
+
+  </Col>
+</Row>
+
+---
+
+## Add a submission {{ tag: 'POST', label: '/course/${task_id}/submissions' }}
+
+<Row>
+  <Col>
+
+    This endpoint is used to add a submission data from student.
+
+    ### Required Attributes
+
+    <Properties>
+      <Property name="submission_id" type="string">
+        Unique identifier for the submission.
+      </Property>
+      <Property name="createdBy_id" type="string">
+        Load the student_id of the assignment sender.
+      </Property>
+      <Property name="task_id" type="string">
+        Load the task_id of task description.
+      </Property>
+      <Property name="createdAt" type="string">
+        Load the assignment's due date.
+      </Property>
+      <Property name="file" type="document">
+        Loads the task file from the sender.
+      </Property>
+      <Property name="student_note" type="string">
+        Load notes from the sender.
+      </Property>
+    </Properties>
+
+  </Col>
+  <Col sticky>
+
+    ```json {{ title: 'Request Body' }}
+    {
+      "data":
+        {
+          "submission_id": "WAz8eIbvDR60rouK",
+          "createdBy_id": "WAz8eIbvDR60rouK",
+          "task_id": "main.jpg",
+          "createdAt": timestamp,
+          "file": document,
+          "student_note": string,
+        },
+    }
+    ```
+
+  </Col>
+</Row>
+
+---
+
+## Edit a submission {{ tag: 'PUT', label: '/course/${task_id}/submissions/${submission_id}' }}
+
+<Row>
+  <Col>
+
+    This endpoint is used to edit a submission data from student that have been added
+
+    ### Require Attributes
+    <Properties>
+      <Property name="submission_id" type="string">
+        Unique identifier for the submission.
+      </Property>
+      <Property name="createdAt" type="string">
+        Load the assignment's due date.
+      </Property>
+    </Properties>
+    ### Optional Attributes
+
+    <Properties>
+      <Property name="file" type="document">
+        Loads the task file from the sender.
+      </Property>
+      <Property name="student_note" type="string">
+        Load notes from the sender.
+      </Property>
+    </Properties>
+
+  </Col>
+  <Col sticky>
+
+    ```json {{ title: 'Request Body' }}
+    {
+      "data":
+        {
+          "submission_id": "WAz8eIbvDR60rouK",
+          "createdAt": timestamp,
+          "file": document,
+          "student_note": string,
+        },
+    }
+    ```
+
+  </Col>
+</Row>
+
+---
+
+## Get all the discussion by course_id {{ tag: 'GET', label: '/course/${course_id}/discussions' }}
+
+<Row>
+  <Col>
+
+    This endpoint is used to get a discussion data by the course_id.
+
+    ### Required Attributes
+
+    <Properties>
+      <Property name="course_id" type="string">
+        Load the course_id of the discussion's room.
+      </Property>
+    </Properties>
+
+  </Col>
+  <Col sticky>
+
+    ```json {{ title: 'Response Data' }}
+    {
+      "status_code": 200,
+      "message": "success",
+      "data":
+        [
+          {
+            "discussion_id": "string",
+            "createdBy_id": "string",
+            "course_id": "string",
+            "createdAt": timestamp,
+            "content": string,
+          },
+          ...
+        ]
+    }
+    ```
+
+  </Col>
+</Row>
+
+---
+
+## Add a discussion {{ tag: 'POST', label: '/course/${course_id}/discussions' }}
+
+<Row>
+  <Col>
+
+    This endpoint is used to add a discussion data from student or fasilitator.
+
+    ### Required Attributes
+
+    <Properties>
+      <Property name="discussion_id" type="string">
+        Unique identifier for the discussion.
+      </Property>
+      <Property name="createdBy_id" type="string">
+        Load the user_id of the discussion sender.
+      </Property>
+      <Property name="course_id" type="string">
+        Load the course_id of the discussion's room.
+      </Property>
+      <Property name="createdAt" type="string">
+        Load the discussion's due date.
+      </Property>
+      <Property name="content" type="string">
+        Loads the discussion from the sender.
+      </Property>
+    </Properties>
+
+  </Col>
+  <Col sticky>
+
+    ```json {{ title: 'Request Body' }}
+    {
+      "data":
+        {
+          "discussion_id": "string",
+          "createdBy_id": "string",
+          "course_id": "string",
+          "createdAt": timestamp,
+          "content": string,
+        },
+    }
+    ```
+
+  </Col>
+</Row>
+
+---
