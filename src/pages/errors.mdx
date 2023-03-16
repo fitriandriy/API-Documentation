@@ -17,20 +17,41 @@ You can tell if your request was successful by checking the status code when rec
 
 ## Status codes
 
-Here is a list of the different categories of status codes returned by the Protocol API. Use these to understand if a request was successful.
-
-<Properties>
-  <Property name="2xx">
-    A 2xx status code indicates a successful response.
-  </Property>
-  <Property name="4xx">
-    A 4xx status code indicates a client error — this means it's a _you_
-    problem.
-  </Property>
-  <Property name="5xx">
-    A 5xx status code indicates a server error — you won't be seeing these.
-  </Property>
-</Properties>
+<Row>
+  <Col>
+    Here is a list of the different categories of status codes returned by the
+    Protocol API. Use these to understand if a request was successful.
+    <Properties>
+      <Property name="200 - OK">Everything worked as expected.</Property>
+      <Property name="201 - Created">
+        A successful response of CREATE requests.
+      </Property>
+      <Property name="204 - No Content">
+        A successful response of UPDATE or DELETE requests.
+      </Property>
+      <Property name="400 - Bad Request">
+        The request was unacceptable, often due to missing a required parameter.
+      </Property>
+      <Property name="401 - Unauthorized">
+        Username or password or bearer-token invalid.
+      </Property>
+      <Property name="403 - Forbidden">
+        The API key doesn't have permissions to perform the request.
+      </Property>
+      <Property name="404 - Not Found">
+        The requested resource doesn't exist.
+      </Property>
+      <Property name="422 - Unprocessable Entity">Validation Fails.</Property>
+      <Property name="429 - Too Many Requests">
+        Hit the API too quickly. We recommend an exponential backoff of your
+        requests.
+      </Property>
+      <Property name="500 - Internal Server Error">
+        Something went wrong on server.
+      </Property>
+    </Properties>
+  </Col>
+</Row>
 
 ---
 
@@ -53,15 +74,69 @@ Here is a list of the different categories of status codes returned by the Proto
     </Properties>
 
   </Col>
-  <Col>
+  <Col sticky>
 
-    ```bash {{ title: "Error response" }}
+    <CodeGroup title="Error response">
+
+    ```bash {{ title: '401' }}
     {
-      "type": "api_error",
-      "message": "No way this is happening!?",
-      "documentation_url": "https://protocol.chat/docs/errors/api_error"
+      "code": 401,
+      "status": "Unauthorized",
+      "message": "Authentication credentials is invalid."
+    }
+
+    ```
+
+    ```bash {{ title: '403' }}
+    {
+      "code": 403,
+      "status": "Forbidden",
+      "message": "Don't have necessary permissions for this resource."
     }
     ```
+
+    ```bash {{ title: '404' }}
+    {
+      "code": 404,
+      "status": "Not Found",
+      "message": "The URL is not recognized or endpoint is valid but the resource itself does not exist."
+    }
+    ```
+
+    ```bash {{ title: '422' }}
+    {
+      "code": 422,
+      "status": "Unprocessable Entity",
+      "message": "The request was well-formed but was unable to be followed due to semantic errors.",
+      "errors": {
+        "username": [
+          "The username is exists."
+        ],
+        "password": [
+          "The password field is required."
+        ]
+      }
+    }
+    ```
+
+    ```bash {{ title: '429' }}
+    {
+      "code": 429,
+      "status": "Too Many Requests",
+      "message": "Sent too many requests in a given amount of time."
+    }
+
+    ```
+
+    ```bash {{ title: '500' }}
+    {
+      "code": 500,
+      "status": "Internal Server Error",
+      "message": "An unexpected condition was encountered."
+    }
+
+    ```
+    </CodeGroup>
 
   </Col>
 </Row>
